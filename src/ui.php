@@ -34,22 +34,21 @@ class Layout {
 <![endif]-->';
 		echo '</head>';
 		echo '<body>';
-		if (isset($_SESSION['valid']) && $_SESSION['valid'] === true) {
-			echo '<div id="wrapper">';
-			//include 'layout_nav.phtml';
-			echo '<div id="page-wrapper">';
-		    echo '<div class="panel-body">';
-		    
-		    if ($this->content_view) {
-				require_once "src/views/{$this->content_view}.php";
-			}
-		    
-		    echo '</div>';
-		    echo '</div>';
-		    echo '</div>';
-		} else { 
-			//include 'layout_login_body.phtml';
+		echo '<div id="wrapper">';
+		//include 'layout_nav.phtml';
+		echo '<div id="page-wrapper">';
+		echo '<div class="row">';
+	    echo '<div class="panel-body">';
+	    
+	    if ($this->content_view) {
+			require_once "src/views/{$this->content_view}.php";
 		}
+	    
+	    echo '</div>';
+	    echo '</div>';
+	    echo '</div>';
+	    echo '</div>';
+		
 		foreach ($this->scripts as $script) {
 			echo "<script src='{$script}'></script>";
 		}
@@ -69,10 +68,13 @@ class InputForm {
 		$this->fields[] = $inputField;
 	}
 	public function render() {
-		echo '<form method="'.$this->method.'" action="'.$this->action.'">';
+		echo '<form role="form" method="'.$this->method.'" action="'.$this->action.'">';
 		foreach ($this->fields as $index => $field) {
+			echo '<div class="form-group">';
 			$field->render();
+			echo '</div>';
 		}
+		echo '<button type="submit" class="btn btn-default">Submit Button</button>';
 		echo '</form>';
 	}
 }
@@ -80,13 +82,20 @@ class InputField {
 	protected $type;
 	protected $value;
 	protected $name;
-	protected $validation;
+	protected $validations;
 	protected $required;
-	public function __construct() {
-
+	public function __construct($name, $type, $label = null, $html_id = null,$value = null, $required = true, $validations = array()) {
+		$this->name = $name;
+		$this->type = $type;
+		if (!$label) $this->label = $name; else $this->label = $label;
+		if (!$html_id) $this->html_id = $name; else $this->html_id = $label;
+		$this->value = $value;
+		$this->required = $required;
+		$this->validations = $validations;
 	}
 	public function render() {
-		echo "<input type='{$this->type}' name='{$this->name}' value='{$this->value}' {($this->required?'required=\"required\"':'')} />"; 
+		echo "<label class='col-sm-12' for='{$this->html_id}'>".$this->label."</label>";
+		echo "<input class='form-control' id='{$this->html_id}' type='{$this->type}' name='{$this->name}' value='{$this->value}' {($this->required?'required=\"required\"':'')} />"; 
 	}
 }
 
