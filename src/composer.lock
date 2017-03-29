@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1981b2acdf4cc363a807823cfa250405",
+    "content-hash": "8a7af88c6654525a02e6f25c72dbc988",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -119,6 +119,47 @@
                 "string"
             ],
             "time": "2015-11-06T14:35:42+00:00"
+        },
+        {
+            "name": "gabordemooij/redbean",
+            "version": "v4.3.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gabordemooij/redbean.git",
+                "reference": "1c7ec69850e9f7966ff7feb87b01d8f43a9753d3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gabordemooij/redbean/zipball/1c7ec69850e9f7966ff7feb87b01d8f43a9753d3",
+                "reference": "1c7ec69850e9f7966ff7feb87b01d8f43a9753d3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "RedBeanPHP\\": "RedBeanPHP"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "New BSD and GPLv2"
+            ],
+            "authors": [
+                {
+                    "name": "Gabor de Mooij",
+                    "email": "gabor@redbeanphp.com",
+                    "homepage": "http://redbeanphp.com"
+                }
+            ],
+            "description": "RedBeanPHP ORM",
+            "homepage": "http://redbeanphp.com/",
+            "keywords": [
+                "orm"
+            ],
+            "time": "2016-10-03T21:25:17+00:00"
         },
         {
             "name": "maciejczyzewski/bottomline",
@@ -320,44 +361,50 @@
             "time": "2016-05-18T13:57:10+00:00"
         },
         {
-            "name": "php-activerecord/php-activerecord",
-            "version": "dev-master",
+            "name": "vlucas/valitron",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jpfuentes2/php-activerecord.git",
-                "reference": "7e96e72f9a018282cce62ef23706dad1532bbaaf"
+                "url": "https://github.com/vlucas/valitron.git",
+                "reference": "b33c79116260637337187b7125f955ae26d306cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jpfuentes2/php-activerecord/zipball/7e96e72f9a018282cce62ef23706dad1532bbaaf",
-                "reference": "7e96e72f9a018282cce62ef23706dad1532bbaaf",
+                "url": "https://api.github.com/repos/vlucas/valitron/zipball/b33c79116260637337187b7125f955ae26d306cc",
+                "reference": "b33c79116260637337187b7125f955ae26d306cc",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=5.3.2"
             },
             "require-dev": {
-                "pear/log": "~1.12",
-                "pear/pear_exception": "1.0-beta1",
-                "phpunit/phpunit": "4.*"
+                "phpunit/phpunit": "~4.0"
             },
             "type": "library",
             "autoload": {
-                "files": [
-                    "ActiveRecord.php"
-                ]
+                "psr-0": {
+                    "Valitron": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "MIT"
+                "BSD"
             ],
-            "description": "php-activerecord is an open source ORM library based on the ActiveRecord pattern.",
-            "homepage": "http://www.phpactiverecord.org/",
+            "authors": [
+                {
+                    "name": "Vance Lucas",
+                    "email": "vance@vancelucas.com",
+                    "homepage": "http://www.vancelucas.com"
+                }
+            ],
+            "description": "Simple, elegant, stand-alone validation library with NO dependencies",
+            "homepage": "http://github.com/vlucas/valitron",
             "keywords": [
-                "activerecord",
-                "orm"
+                "valid",
+                "validation",
+                "validator"
             ],
-            "time": "2016-11-29 11:06:47"
+            "time": "2017-02-23T08:31:59+00:00"
         }
     ],
     "packages-dev": [
@@ -1483,7 +1530,7 @@
     "stability-flags": {
         "anahkiasen/underscore-php": 20,
         "mikecao/flight": 20,
-        "php-activerecord/php-activerecord": 20
+        "gabordemooij/redbean": 0
     },
     "prefer-stable": false,
     "prefer-lowest": false,

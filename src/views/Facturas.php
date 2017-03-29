@@ -1,8 +1,19 @@
-<?php
-$result = Flight::get('result');
-?><div class="panel panel-default">
+<div class="panel panel-default col-md-4">
 <div class="panel-heading">Clientes</div>
-<div class="panel-body">
+<div class="panel-body"><?php
+$result = Flight::get('result');
+
+$form = new InputForm('clientes/editar');
+$form->addField(new InputField('nombre','text'));
+$form->addField(new InputField('apellido','text'));
+$form->addField(new InputField('dni','text'));
+$form->addField(new InputField('telefono','text'));
+$form->addField(new InputField('email','text'));
+$form->addField(new InputField('direccion','text'));
+$form->render();
+
+if(isset($result['rows'])) {
+?>
 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
 <thead>
 <tr>
@@ -17,7 +28,8 @@ $result = Flight::get('result');
 </tr>
 </thead>
 <tbody>
-<?php foreach ($result['rows'] as $i => $row) { 
+<?php 
+foreach ($result['rows'] as $i => $row) { 
 	echo '<tr class="'.($i%2==1?'odd':'even').' gradeX">';
 	echo '<th>#</th>';
 	echo '<th>'.$row['nombre'].'</th>';
@@ -34,3 +46,4 @@ echo '</tr>';
 </table>
 </div>
 </div>
+<?php } ?>

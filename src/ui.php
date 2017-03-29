@@ -34,18 +34,14 @@ class Layout {
 <![endif]-->';
 		echo '</head>';
 		echo '<body>';
-		echo '<div id="wrapper">';
 		//include 'layout_nav.phtml';
-		echo '<div id="page-wrapper">';
-		echo '<div class="row">';
-	    echo '<div class="panel-body">';
+		echo '<div class="container">';
+	    echo '<div class="row">';
 	    
 	    if ($this->content_view) {
 			require_once "src/views/{$this->content_view}.php";
 		}
 	    
-	    echo '</div>';
-	    echo '</div>';
 	    echo '</div>';
 	    echo '</div>';
 		
@@ -61,43 +57,64 @@ class InputForm {
 	protected $fields = array();
 	protected $method = 'post';
 	protected $action = '.';
-	public function __construct($action) {
+	protected $model = null;
+	public function __construct($action, $method = 'post') {
 		$this->action = $action;
+		$this->method = $method;
 	}
-	public function addField($inputField) {
-		$this->fields[] = $inputField;
+	public function addField($label, $inputField) {
+		$this->fields[$label] = $inputField;
 	}
 	public function render() {
 		echo '<form role="form" method="'.$this->method.'" action="'.$this->action.'">';
-		foreach ($this->fields as $index => $field) {
+		foreach ($this->fields as $label => $field) {
 			echo '<div class="form-group">';
+			if ($label) {
+				echo '<label class="col-sm-12" for="'.$field->getName().'">'.$label.'</label>';
+			}
 			$field->render();
+			
 			echo '</div>';
 		}
-		echo '<button type="submit" class="btn btn-default">Submit Button</button>';
+		echo '<div class="form-group">';
+		echo '<button type="submit" class="btn btn-default">Submit Button</button> ';
+		echo '<button type="reset" class="btn btn-default">Reset Button</button>';
+		echo '</div>';
 		echo '</form>';
 	}
 }
 class InputField {
+	
+	protected $name;
 	protected $type;
 	protected $value;
-	protected $name;
-	protected $validations;
-	protected $required;
-	public function __construct($name, $type, $label = null, $html_id = null,$value = null, $required = true, $validations = array()) {
+	public $required = true;
+	public $html_attrs;
+
+	public function __construct($name, $type = 'text', $value = '', $html_attrs = '') {
 		$this->name = $name;
 		$this->type = $type;
-		if (!$label) $this->label = $name; else $this->label = $label;
-		if (!$html_id) $this->html_id = $name; else $this->html_id = $label;
 		$this->value = $value;
-		$this->required = $required;
-		$this->validations = $validations;
+		$this->html_attrs = $html_attrs;
 	}
+	
 	public function render() {
-		echo "<label class='col-sm-12' for='{$this->html_id}'>".$this->label."</label>";
-		echo "<input class='form-control' id='{$this->html_id}' type='{$this->type}' name='{$this->name}' value='{$this->value}' {($this->required?'required=\"required\"':'')} />"; 
+		echo '<input ';
+		echo 'type="'.$this->type.'" ';
+		echo 'name="'.$this->name.'" ';
+		echo 'id="'.$this->name.'" '; 
+		echo 'value="'.$this->value.'" ';
+		if ($this->required) {
+			echo 'required="required" ';
+		}
+		echo '/>';
+	}
+
+	public function getName() {
+		return $this->name;
 	}
 }
+
 
 class DataTable  {
     function render() {

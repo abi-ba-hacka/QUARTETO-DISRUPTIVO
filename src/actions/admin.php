@@ -1,33 +1,72 @@
 <?php
-Flight::route('GET /clientes', function(){
-	$result = array();
-    $clientes = Clientes::find('all');
-    foreach ($clientes as $index => $cliente) {
-    	$result['rows'][] = $cliente->to_array();
+function clienteList($id = null){
+    $result = array();
+    $result['id'] = $id;
+    if ($id) {
+        $st = Flight::db()->prepare('SELECT * FROM clientes WHERE id_cliente = :id;');
+        $st->bindParam(':id', $id);
+        $st->execute();
+        $result['rows'] = $st->fetchAll(PDO::FETCH_ASSOC);
+    } else {
+        $st = Flight::db()->prepare('SELECT * FROM clientes;');
+        $st->execute();
+        $result['rows'] = $st->fetchAll(PDO::FETCH_ASSOC);
     }
+    
     Flight::set('view','Clientes');
-    Flight::set('result',$result);
-});
+    Flight::set('result', $result);
+    require_once 'src/response.php';
+}
+Flight::route('GET /clientes', clienteList);
+Flight::route('GET /clientes/@id', clienteList);
 
-Flight::route('POST|PUT /clientes/@id', function($id){
-    $cliente = Clientes::create(array(
-    	'nombre' => Flight::request()->data['nombre'],
-    	'apellido' => Flight::request()->data['apellido'],
-    	'dni' => Flight::request()->data['dni'],
-    	'telefono' => Flight::request()->data['telefono'],
-    	'email' => Flight::request()->data['email'],
-    	'direccion' => Flight::request()->data['direccion']
-    	)
-    );
-	$cliente->save();
-	Flight::set('result',$cliente);
-    Flight::set('view','form');
-});
-Flight::route('POST /clientes/@id', function($id){
-    $cliente = Clientes::find_by_id_cliente($id);
-    Flight::set('result',$cliente);
-    Flight::set('view','form');
-});
+function clienteForm($id = null){
+    $cliente = null;
+    $data = Flight::request()->data;
+    ///print_r($data);exit;
+    if ($id) {
+        $st = Flight::db()->prepare('UPDATE users SET (
+        nombre = :nombre, 
+        apellido = :apellido, 
+        dni = :dni, 
+        telefono = :telefono,
+        email = :email,
+        direccion = :direccion)
+        WHERE id_cliente = :id;');
+        
+        $st->bindParam(':id', $id);
+        $st->bindParam(':nombre', $data['nombre']);
+        $st->bindParam(':apellido', $apellido);
+        $st->bindParam(':dni', $dni);
+        $st->bindParam(':telefono', $telefono);
+        $st->bindParam(':email', $email);
+        $st->bindParam(':direccion', $direccion);
+        $st->execute();
+        echo $st->errorInfo();
+    } else {
+        $st = Flight::db()->prepare('INSERT INTO users (
+            :nombre, 
+            :apellido,
+            :dni,
+            :telefono, 
+            :email, 
+            :direccion
+        );');
+        
+        $st->bindParam(':id', $id);
+        $st->bindParam(':nombre', $data['nombre']);
+        $st->bindParam(':apellido', $apellido);
+        $st->bindParam(':dni', $dni);
+        $st->bindParam(':telefono', $telefono);
+        $st->bindParam(':email', $email);
+        $st->bindParam(':direccion', $direccion);
+    }
+    Flight::set('redirect' ,'/clientes');
+    require_once 'src/response.php';
+}
+
+Flight::route('POST|PUT /clientes/editar/@id', clienteForm);
+Flight::route('POST|PUT /clientes/crear', clienteForm);
 
 Flight::route('GET /facturas/', function(){
 	$result = array();
@@ -36,8 +75,7 @@ Flight::route('GET /facturas/', function(){
     	$result['rows'][] = $factura->to_array();
     	$cliente = Clientes::find_by_id_cliente($factura->cliente);
     }
-    Flight::set('result',$result);
-    Flight::set('view','Facturas');
+    require_once 'src/response.php';
 });
 Flight::route('GET /facturas/@id', function($id){
 	$result = array('headers'=>array('#', 'fecha', 'cliente', 'id_cliente'));
@@ -47,6 +85,6 @@ Flight::route('GET /facturas/@id', function($id){
 
 	$result = $factura->to_array();
 	$result['items'] = $items->to_array();
-    Flight::set('result',$result);
     Flight::set('view','form');
+    require_once 'src/response.php';
 });
