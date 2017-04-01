@@ -1,2 +1,13 @@
 <?php 
-class Clientes extends ActiveRecord\Model{}
+class Clientes extends Model {
+	const TABLE = 'Clientes';
+	const PK = array('id_cliente' => array(['integer'], ['min', 1]));
+	const FIELDS = array(
+		'nombre' => ['required'],
+		'apellido' => ['required'],
+		'dni' => ['required'],
+		'telefono' => ['required'],
+		'email' => ['required','email'],
+		'direccion' => ['required']
+	);
+}

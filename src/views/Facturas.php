@@ -1,33 +1,59 @@
 <?php
-$result = Flight::get('result');
+$model = null;
+$value_fecha = '';
+$value_cliente = '';
+
+if (App::$response['id']) {
+	$model = App::$response['data']['model'];
+	if (isset($_SESSION['request'])) {
+		$model = $_SESSION['request'];
+		unset($_SESSION['request']);
+	}
+} else {
+	if (isset($_SESSION['request'])) {
+		$model = $_SESSION['request'];
+		unset($_SESSION['request']);
+	}
+	if (isset($_SESSION['errors'])) {
+		$model = $_REQUEST;
+	}
+}
+
+
+$form = new Form(
+	App::url('facturas/save'),
+	Facturas::FIELDS
+);
+$form->setModel($model);
+$form->addHiddenFields('id_factura', App::$response['id']);
+
+
 ?><div class="panel panel-default">
 <div class="panel-heading">Clientes</div>
 <div class="panel-body">
+<?php $form->render(); ?>
+
 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
 <thead>
 <tr>
 <th>#</th>
-<th>Nombre</th>
-<th>Apellido</th>
-<th>DNI</th>
-<th>Teléfono</th>
-<th>Email</th>
-<th>Dirección</th>
-<th>Aciones</th>
+<th>Fecha</th>
+<th>Cliente</th>
 </tr>
 </thead>
 <tbody>
-<?php foreach ($result['rows'] as $i => $row) { 
-	echo '<tr class="'.($i%2==1?'odd':'even').' gradeX">';
-	echo '<th>#</th>';
-	echo '<th>'.$row['nombre'].'</th>';
-	echo '<th>'.$row['apellido'].'</th>';
-	echo '<th>'.$row['nombre'].'</th>';
-	echo '<th>'.$row['telefono'].'</th>';
-	echo '<th>'.$row['email'].'</th>';
-	echo '<th>'.$row['direccion'].'</th>';
-	echo '<th><a href="'.BASE_URL.'clientes/borrar/'.$row['id_cliente'].'">borrar</a></th>';
-echo '</tr>';
+<?php 
+if (isset(App::$response['data']['rows'])) {
+	foreach (App::$response['data']['rows'] as $i => $row) { 
+		echo '<tr class="'.($i%2==1?'odd':'even').' gradeX">';
+		echo '<th>'.$row['id_cliente'].'</th>';
+		echo '<th>'.$row['fecha'].'</th>';
+		echo '<th>';
+		echo '<a href="'.BASE_URL.'facturas/borrar/'.$row['id_cliente'].'">borrar</a>';
+		echo ' <a href="'.BASE_URL.'facturas/'.$row['id_cliente'].'">editar</a>';
+		echo '</th>';
+		echo '</tr>';
+	}
 }
 ?>
 </tbody>

@@ -5,7 +5,11 @@
         "mikecao/flight": "dev-master",
         "maciejczyzewski/bottomline": "*",
         "mustangostang/spyc":"*",
-        "php-activerecord/php-activerecord":"@dev"
+        "php-activerecord/php-activerecord":"@dev",
+        "vlucas/valitron":"*",
+        "fguillot/simpleLogger": "@stable",
+        "monolog/monolog":"@stable",
+        "plasticbrain/php-flash-messages":"*"
     },
     "require-dev": {
         "phpunit/phpunit": "4.7.*" 
