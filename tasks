@@ -1,0 +1,18 @@
+Make tests
+id in model attr or in fields array? DONE  in attr and use select static::FIELDS
+
+DONE bucket trits
+
+select option data from database to dropdown
+validate javascript forms
+make the other windows
+
+TODO DAO OPTIONAL FIELDS IN UPDATE 
+EREASE WHEN FILLED IN BLANK
+DONT EREASE WHEN NOT SENT
+
+TODO bucket's method/s query return iterable object to be used direcly from render
+
+
+FIX UPDATE ERROR for dates or sth need quotes -- DONE not quotes needed with pdo
+clean error from session when those are displayed DONE

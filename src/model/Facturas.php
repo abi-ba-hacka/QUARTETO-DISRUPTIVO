@@ -1,10 +1,10 @@
 <?php 
 class Facturas extends Model {
-	protected $id_factura;
+	use SqlTableBucket;
 	const TABLE = 'Facturas';
 	const PK = array('id_factura' => array(['integer'], ['min', 1]));
 	const FIELDS = array(
-		'fecha' => ['required', 'date'],
+		'fecha' => ['required', 'YYYY-mm-dd'],
 		'cliente' => ['required']
 	);
 }

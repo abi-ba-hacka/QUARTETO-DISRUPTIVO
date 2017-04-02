@@ -1,5 +1,6 @@
 <?php 
 class Clientes extends Model {
+	use SqlTableBucket;
 	const TABLE = 'Clientes';
 	const PK = array('id_cliente' => array(['integer'], ['min', 1]));
 	const FIELDS = array(

@@ -1,14 +1,4 @@
 <?php
-function error_by_field($field) {
-	$result = '';
-	if (isset($_SESSION['errors'][$field])) {
-		foreach (($_SESSION['errors'][$field]) as $key => $value) {
-			$result .= $value.' ';
-			unset($_SESSION['errors'][$field]);
-		}
-	}
-	return $result;
-}
 class Layout {
 	protected $title = '';
 	public function __construct() {
@@ -52,8 +42,8 @@ class Layout {
 		echo '<div id="page-wrapper">';
 	    echo '<div class="panel-body">';
 
-	    if ($view = App::$response['view']) {
-			require_once 'src/views/'.App::$response['view'].'.php';
+	    if (isset(App::$response['view'])) {
+			require_once 'src/view/'.App::$response['view'].'.php';
 		}
 
 	    echo '</div>';
@@ -65,40 +55,5 @@ class Layout {
 		}
 		echo '</body>';
 		echo '</html>';
-	}
-}
-class Form {
-	private $hiddenFields = array();
-	public function __construct($action, $fields=array()) {
-		$this->action = $action;
-		$this->fields = $fields;
-	}
-	public function setModel($model) {
-		$this->model = $model;
-	}
-	public function setErrors($errors) {
-		$this->errors = $errors;
-	}
-	public function addHiddenFields($name, $value) {
-		$this->hiddenFields[$name] = $value;
-	}
-	public function render() {
-		echo '<form method="post" action="'.App::url('facturas/save').'">';
-		foreach ($this->fields as $name => $field) {
-			echo '<label>';
-			echo App::i18n($name);
-			echo '</label>';
-			echo '<input name="'.$name.'"';
-			if (in_array('date', $field)) echo 'type="date"';
-			else echo 'type="text"';
-			echo '/>';
-			echo '<br>';
-		}
-		foreach ($this->hiddenFields as $name => $value) {
-			echo '<input type="hidden" name="'.$name.'" value="'.$value.'">';
-		}
-		echo '<input type="reset" name="">';
-		echo '<input type="submit" name="">';
-		echo '</form>';
 	}
 }

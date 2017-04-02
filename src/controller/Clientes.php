@@ -23,9 +23,11 @@ Flight::route('/clientes/save', function() {
     $cliente->telefono = $data['telefono'];
     $cliente->email = $data['email'];
     $cliente->direccion = $data['direccion'];
-    $cliente->save();
+    if (!$cliente->save() && $data->pk) {
+        App::$response['follow'] = App::url('clientes/'.$data->pk);
+    }
 });
-Flight::route('/clientes/borrar/@id:[0-9]+', function($id) {
+Flight::route('/clientes/@id:[0-9]+/borrar/', function($id) {
     App::$response['follow'] = App::url('clientes');
     $cliente = new Clientes($id);
     if ($cliente) {

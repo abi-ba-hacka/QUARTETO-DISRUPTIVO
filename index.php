@@ -2,13 +2,22 @@
 require_once 'src/vendor/autoload.php';
 require_once 'src/ABSPATH.php';
 require_once 'src/vendor/autoload.php';
+
 require_once 'src/core/Model.php';
-require_once 'src/models/Facturas.php';
-require_once 'src/models/Items.php';
-require_once 'src/models/Clientes.php';
-require_once 'src/actions/Clientes.php';
-require_once 'src/actions/Facturas.php';
-require_once 'src/actions/Items.php';
+require_once 'src/core/SqlTableBucket.php';
+
+require_once 'src/model/Facturas.php';
+require_once 'src/model/Items.php';
+require_once 'src/model/Clientes.php';
+
+require_once 'src/controller/Clientes.php';
+require_once 'src/controller/Facturas.php';
+require_once 'src/controller/Items.php';
+
+require_once 'src/core/HtmlNode.php';
+require_once 'src/core/Layout.php';
+require_once 'src/core/Form.php';
+require_once 'src/core/Datatable.php';
 
 ob_start();
 if (!session_id()) @session_start();
@@ -16,21 +25,32 @@ use Underscore\Types\Arrays;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
+if (isset($_SESSION['referral_request'])) {
+	App::$referral_request = $_SESSION['referral_request'];
+	unset($_SESSION['referral_request']);
+}
+
 class App {
 	static $development = true;
+	public static $referral_request;
 	public static $db;
 	public static $flash_message;
 	public static $redirect;
-	public static $response = array ();
-	public function pushRequestError($field, $description) {
-		$_SESSION['errors'][$field][] = $description;
-	}
-	public function resetRequestErrors() {
-		$_SESSION['errors'] = array();
-	}
+	public static $internal_error;
+	public static $response = array (
+		'action' => null,
+		'data'=> array(
+			'id' => null,
+			'rows' => null,
+			'model' => null,
+		),
+		'view' => null
+	);
 	public static function init() {
 		static::$db = new PDO('mysql:host=localhost;dbname=Facturacion;charset=utf8mb4', 'root', '');
 		static::$flash_message = new \Plasticbrain\FlashMessages\FlashMessages();
+		$log = new Logger('name');
+		$log->pushHandler(new StreamHandler('/tmp/php_error.log', Logger::WARNING));
 	}
 	public function setAction($action) {
 		static::$response['action'] = $action;
@@ -44,8 +64,25 @@ class App {
 	public function i18n($key,$params = null) {
 		return $key;
 	}
+	public function redirect($url) {
+		if (App::$development) {
+			echo '<a href="'.App::$response['follow'].'">Redirect</a>';
+		} else {
+			Flight::redirect(App::$response['follow']);
+		}
+	}
+	public function info() {
+		if (App::$development) {
+			echo '<!--';
+			echo 'SESSION: ';print_r($_SESSION);
+			echo 'POST: ';print_r($_POST);
+			echo 'RESPONSE: ';print_r(App::$response);
+			echo 'INTERNAL_ERROR: ';print_r(App::$internal_error);
+			echo 'DATABASE_ERROR_INFO: ';print_r(App::$db->errorInfo());
+			echo '-->';
+		}
+	}
 }
-
 App::init();
 class InputException extends Exception {
 	public function __construct() {
@@ -53,12 +90,11 @@ class InputException extends Exception {
 		parent::__construct();
 	}
 }
-
-$render = function(&$params, &$output){
-	if (App::$development) {
-		App::$response['__session'] = $_SESSION;
-		App::$response['__post'] = $_POST;
-	}
+Flight::route('GET /', function(){});
+Flight::before('start', function(){
+	App::setAction(Flight::request()->url);
+});
+Flight::after('start', function(&$params, &$output){
 	if (Flight::request()==='ajax' || isset($_GET['ajax'])) {
 		App::$response['flash_message'] = $_SESSION['flash_messages'];
 		App::$response['errors'] = $_SESSION['errors'];
@@ -67,13 +103,8 @@ $render = function(&$params, &$output){
 		unset($_SESSION['errors']);
 	} else {
 		if (isset(App::$response['follow'])) {
-			if (App::$development) {
-				echo '<a href="'.App::$response['follow'].'">Redirect</a>';
-			} else {
-				Flight::redirect($redirect);
-			}
+			App::redirect(App::$response['follow']);
 		} else {
-			require_once 'src/ui.php';
 			$ui = new Layout();
 			$ui->addStylesheetURL(BASE_URL.'vendor/bootstrap/css/bootstrap.min.css');
 			$ui->addStylesheetURL(BASE_URL.'vendor/metisMenu/metisMenu.min.css');
@@ -92,30 +123,13 @@ $render = function(&$params, &$output){
 			$ui->addJavascriptURL(BASE_URL.'js/main.js');
 			$ui->render();
 		}
-		if (App::$development) {
-	    	echo '<pre style="width:100%;white-space: pre-wrap;">';
-	    	print_r(App::$response);
-	    	// echo 'PARAMS: ';print_r($params);
-			// echo 'OUTPUT: ';print_r($output);
-	    	echo '</pre>';
-	    }
+		App::info();
 	}
-};
-
-Flight::route('GET /', function(){});
-Flight::before('start', function(){
-	App::setAction(Flight::request()->url);
 });
-Flight::after('start', $render);
-
-$a=array();
 try {
 	Flight::start();
 } catch(Exception $e) {
-	if (App::$development) {
-		App::$response['internal error'] = $e;	
-	} else {
-		App::$flash_message->error('Se ha producido un error');
-	}
-	$render($a,$a);
+	App::$internal_error = $e;	
+	App::$flash_message->error('Se ha producido un error');
 }
+App::info();
