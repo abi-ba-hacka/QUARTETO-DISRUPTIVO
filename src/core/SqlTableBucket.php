@@ -56,11 +56,7 @@ trait SqlTableBucket {
 				$stmt->bindParam(':'.$field_name, $data[$field_name]);
 			}
 		}
-		if ($pk) {
-			return $stmt->execute();
-		} else {
-			return App::$db->lastInsertId();	
-		} 
+		return $stmt->execute();
 	}
 	public static function destroy($pk) {
 		$stmt = App::$db->prepare('DELETE  FROM '.static::TABLE.' WHERE '.static::pk_name().' = :'.static::pk_name());

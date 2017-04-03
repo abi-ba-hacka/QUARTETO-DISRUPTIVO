@@ -9,6 +9,16 @@ class Model {
 			$this->load();
 		}
 	}
+	public function fromArray($array,$overwrite = true) {
+		foreach (static::FIELDS as $key => $value) {
+			if (isset($array[$key])) {
+				$this->fields[$key] = $array[$key];
+			}
+		}
+	}
+	public function toArray() {
+		return $this->fields;
+	}
 	public function load() {
 		if ($model = static::get($this->pk)) {
 			foreach (static::getFieldsNames() as $key) {
@@ -18,9 +28,11 @@ class Model {
 		}
 	}
 	public function save() {
-		if ($this->validate()){  
-			$this->pk = static::set($this->pk, $this->fields);
-			return $this->pk;
+		if ($this->validate()){   
+			if (static::set($this->pk, $this->fields)) {
+				$this->pk = App::$db->lastInsertId();
+				return $this->pk;
+			}
 		}
 	}
 	public function drop() {

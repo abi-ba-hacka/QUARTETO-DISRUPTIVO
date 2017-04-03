@@ -17,9 +17,7 @@ Flight::route('/items/save', function() {
     App::$response['follow'] = App::url('items');
     $data = Flight::request()->data;
     $item = new Items($data['id_item']);
-    // TODO implelment for current fields
-    // $item->fecha = $data['fecha'];
-    // $item->cliente = $data['cliente'];
+    $item->fromArray($data);
     if (!$item->save() && $data->pk) {
         App::$response['follow'] = App::url('items/'.$data->pk);
     }
