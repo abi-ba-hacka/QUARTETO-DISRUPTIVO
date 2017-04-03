@@ -31,7 +31,7 @@ if (isset($_SESSION['referral_request'])) {
 }
 
 class App {
-	static $development = true;
+	static $development = false;
 	public static $referral_request;
 	public static $db;
 	public static $flash_message;
@@ -47,7 +47,13 @@ class App {
 		'view' => null
 	);
 	public static function init() {
-		static::$db = new PDO('mysql:host=localhost;dbname=Facturacion;charset=utf8mb4', 'root', '');
+		
+
+		$config = require_once 'src/config.php';
+		static::$db = new PDO(
+			$config['pdo_driver'].':host='.	$config['pdo_host'].
+			';dbname='.$config['pdo_database_name'].
+			';charset=utf8mb4', 'root', '');
 		static::$flash_message = new \Plasticbrain\FlashMessages\FlashMessages();
 		$log = new Logger('name');
 		$log->pushHandler(new StreamHandler('/tmp/php_error.log', Logger::WARNING));

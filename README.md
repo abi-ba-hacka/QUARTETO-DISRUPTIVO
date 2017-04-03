@@ -1,12 +1,12 @@
 # Facaturacion
 
-It is a simple architecture for php webapps that joins some 3rd party components.
+[SSelvaggi/Facturacion]: https://github.com/sselvaggi/facturacion is a simple architecture for php webapps that joins many 3rd party components.
 - MVC Framework: "mikecao/flight"
 - Validator: "vlucas/valitron"
-- Collection: "maciejczyzewski/bottomline"
+- Collections: "maciejczyzewski/bottomline"
 - Logger: "monolog/monolog"
 - Flash messages: "plasticbrain/php-flash-messages"
-- Responsive UI: jQuery, Twitter Bootstrap & SBadmin2 Template
+- Html5 Responsive UI: jQuery, Twitter Bootstrap & SBadmin2 Template
 
 ## Install 
 
