@@ -4,5 +4,5 @@ return array(
 	'pdo_user' => 'root',
 	'pdo_password' => '',
 	'pdo_host' => 'localhost',
-	'pdo_database_name' => 'main' 
+	'pdo_database_name' => 'Facturacion' 
 );

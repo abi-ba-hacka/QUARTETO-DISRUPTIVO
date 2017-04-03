@@ -26,11 +26,28 @@ class Form {
 			echo App::i18n($name);
 			echo '</label>';
 			echo '<input name="'.$name.'"';
-			if (in_array('YYYY-mm-dd', $field)) echo 'type="date"';
-			else echo 'type="text"';
+			if (in_array('YYYY-mm-dd', $field)) {
+				$type = 'date';	
+			} else {
+				if (in_array('integer', $field)) {
+					$type = 'number';
+					echo ' step="1" ';
+				} elseif (in_array('number', $field)) {
+					$type = 'number';
+				} else {
+					$type = 'text';
+				}
+			}
+			echo 'type="'.$type.'"';
 			if (in_array('required', $field)) echo 'required="required"';
 			if (isset($this->model[$name])) {
 				echo ' value="'.$this->model[$name].'" ';
+			}
+			
+			foreach ($field as $validation) {
+				if (is_array($validation) && $validation[0] == 'min') {
+					echo ' min="'.$validation[1].'" ';
+				}
 			}
 			echo '/> ';
 			if (in_array('required', $field)) echo '*';
