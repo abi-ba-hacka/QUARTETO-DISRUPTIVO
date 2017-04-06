@@ -1,10 +1,11 @@
 <?php
 class Form {
-	private $model;
-	private $action;
-	private $fields = array();
-	private $hiddenFields = array();
-	public function __construct($action, $fields=array()) {
+	protected $model;
+	protected $action;
+	protected $fields = array();
+	protected $options =array();
+	protected $hiddenFields = array();
+	public function __construct($action,$fields=array()) {
 		$this->action = $action;
 		$this->fields = $fields;
 	}
@@ -13,6 +14,9 @@ class Form {
 	}
 	public function addHiddenFields($name, $value) {
 		$this->hiddenFields[$name] = $value;
+	}
+	public function setOptions($name, $options = array(), $fn) {
+		$this->options[$name] = $options;
 	}
 	public function render() {
 		if (App::$referral_request) {
@@ -25,35 +29,45 @@ class Form {
 			echo '<label>';
 			echo App::i18n($name);
 			echo '</label>';
-			echo '<input name="'.$name.'"';
-			if (in_array('YYYY-mm-dd', $field)) {
-				$type = 'date';	
+			if (isset($this->options[$name])) {
+				echo '<select>';
+				foreach ($this->options[$name] as $option) {
+					echo '<option value="'.$option['id_cliente'].'">';
+					echo $option['apellido'].' '.$option['nombre'];
+					echo '</option>';
+				}
+				echo '</select>';
 			} else {
-				if (in_array('integer', $field)) {
-					$type = 'number';
-					echo ' step="1" ';
-				} elseif (in_array('number', $field)) {
-					$type = 'number';
+				echo '<input name="'.$name.'"';
+				if (in_array('YYYY-mm-dd', $field)) {
+					$type = 'date';	
 				} else {
-					$type = 'text';
+					if (in_array('integer', $field)) {
+						$type = 'number';
+						echo ' step="1" ';
+					} elseif (in_array('number', $field)) {
+						$type = 'number';
+					} else {
+						$type = 'text';
+					}
 				}
-			}
-			echo 'type="'.$type.'"';
-			if (in_array('required', $field)) echo 'required="required"';
-			if (isset($this->model[$name])) {
-				echo ' value="'.$this->model[$name].'" ';
-			}
-			
-			foreach ($field as $validation) {
-				if (is_array($validation) && $validation[0] == 'min') {
-					echo ' min="'.$validation[1].'" ';
+				echo 'type="'.$type.'"';
+				if (in_array('required', $field)) echo 'required="required"';
+				if (isset($this->model[$name])) {
+					echo ' value="'.$this->model[$name].'" ';
 				}
-			}
-			echo '/> ';
-			if (in_array('required', $field)) echo '*';
-			if (isset($_SESSION['errors']['form'][$name])) {
-				echo implode(' ', $_SESSION['errors']['form'][$name]);
-				unset($_SESSION['errors']['form'][$name]);
+				
+				foreach ($field as $validation) {
+					if (is_array($validation) && $validation[0] == 'min') {
+						echo ' min="'.$validation[1].'" ';
+					}
+				}
+				echo '/> ';
+				if (in_array('required', $field)) echo '*';
+				if (isset($_SESSION['errors']['form'][$name])) {
+					echo implode(' ', $_SESSION['errors']['form'][$name]);
+					unset($_SESSION['errors']['form'][$name]);
+				}	
 			}
 			echo '<br>';
 		}

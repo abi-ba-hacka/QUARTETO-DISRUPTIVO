@@ -1,7 +1,7 @@
 <?php
 Flight::route('/items', function(){
     App::$response['id'] = null;
-    App::$response['data']['rows'] = Items::all();
+    App::$response['data']['rows'] = Items::rows();
     App::$response['view'] = 'Items';
 });
 Flight::route('/items(/@id:[0-9]*)', function($id) {

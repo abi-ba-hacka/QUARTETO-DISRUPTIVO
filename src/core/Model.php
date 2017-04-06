@@ -1,5 +1,5 @@
 <?php
-class Model {
+abstract class  Model {
 	public static $VALIDATORS = array();
 	protected $pk;
 	protected $fields = array();
@@ -28,7 +28,7 @@ class Model {
 		}
 	}
 	public function save() {
-		if ($this->validate()){   
+		if ($this->validate()) {   
 			if (static::set($this->pk, $this->fields)) {
 				$this->pk = App::$db->lastInsertId();
 				return $this->pk;
@@ -76,4 +76,9 @@ class Model {
 			return false;
 		}
 	}
+	public abstract function each($fn);
+	public abstract function rows($selection=null);
+	public abstract function get($pk);
+	protected abstract function set($pk,$data);
+	public abstract function destroy($pk);
 }

@@ -1,7 +1,7 @@
 <?php 
 class Items extends Model {
 	use SqlTableBucket;
-	const TABLE = 'Items';
+	const NAME = 'Items';
 	const PK = array('id_item' => array(['integer'], ['min', 1]));
 	const FIELDS = array(
 		'factura' => ['required'],

@@ -1,6 +1,6 @@
 # Facaturacion
 
-[SSelvaggi/Facturacion]: https://github.com/sselvaggi/facturacion is a simple architecture for php webapps that joins many 3rd party components.
+[sselvaggi/facturacion]:https://github.com/sselvaggi/facturacion is a simple architecture for php webapps that joins many 3rd party components.
 - MVC Framework: "mikecao/flight"
 - Validator: "vlucas/valitron"
 - Collections: "maciejczyzewski/bottomline"
@@ -34,7 +34,7 @@ for more info about validator.
 ```php
 class Facturas extends Model {
   use SqlTableBucket;
-  const TABLE = 'Facturas';
+  ::NAME = 'Facturas';
   const PK = array('id_factura' => array(['integer'], ['min', 1]));
   const FIELDS = array(
     'fecha' => ['required', 'YYYY-mm-dd'],

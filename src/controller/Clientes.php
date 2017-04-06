@@ -1,7 +1,7 @@
 <?php
 Flight::route('/clientes', function(){
     App::$response['id'] = null;
-    App::$response['data']['rows'] = Clientes::all();
+    App::$response['data']['rows'] = Clientes::rows();
     App::$response['view'] = 'Clientes';
 });
 Flight::route('/clientes/@id:[0-9]*', function($id){

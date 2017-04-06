@@ -3,6 +3,9 @@ $form = new Form(
 	App::url('facturas/save'),
 	Facturas::FIELDS
 );
+$form->setOptions('cliente', Clientes::rows(Clientes::SELECTION['nombre_completo']), function($row){
+
+});
 $form->setModel(App::$response['data']['model']);
 $form->addHiddenFields('id_factura', App::$response['id']);
 ?>

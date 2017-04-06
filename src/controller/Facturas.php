@@ -1,7 +1,7 @@
 <?php
 Flight::route('/facturas', function(){
     App::$response['id'] = null;
-    App::$response['data']['rows'] = Facturas::all();
+    App::$response['data']['rows'] = Facturas::rows();
     App::$response['view'] = 'Facturas';
 });
 Flight::route('/facturas(/@id:[0-9]*)', function($id) {
@@ -17,8 +17,7 @@ Flight::route('/facturas/save', function() {
     App::$response['follow'] = App::url('facturas');
     $data = Flight::request()->data;
     $factura = new Facturas($data['id_factura']);
-    $factura->fecha = $data['fecha'];
-    $factura->cliente = $data['cliente'];    
+    $factura->fromArray($data);    
     if (!$factura->save() && $data->pk) {
         App::$response['follow'] = App::url('facturas/'.$data->pk);
     }

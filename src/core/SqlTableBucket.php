@@ -1,22 +1,41 @@
 <?php
+class Result implements Iterator {
+	public mixed current ( void )
+	public scalar key ( void )
+	public void next ( void )
+	public void rewind ( void )
+	public boolean valid ( void )
+}
 trait SqlTableBucket {
 	public static function each($fn) {
-		$sql = 'SELECT * FROM '.static::TABLE;
+		$sql = 'SELECT * FROM '.static::NAME;
 		$stmt = App::$db->query($sql);
    		while($row = $stmt->fetch(PDO::FETCH_ASSOC) && $fn($row)) {
    			;
 		}
 	}
-	public static function all() {
-		return static::filter();
-	}
-	public static function filter($params = array()) {
-		$sql = 'SELECT * FROM '.static::TABLE;
+	public static function rows($selection=null) {
+		$field_list = '*';
+		if ($selection == null) {
+			$selection = array('fields'=>array_keys(static::FIELDS));
+		}
+		if (!in_array(static::pk_name(), $selection['fields'])) {
+			$selection['fields'][] = static::pk_name();
+		}
+		if ($selection && isset($selection['fields'])) {
+			$field_list = implode(', ', $selection['fields']);
+		}
+		
+		foreach ($selection as $key => $value) {
+			// $field_list = $value.',';
+		}
+		$field_list = implode(',', $selection['fields']);
+		$sql = 'SELECT '.$field_list.' FROM '.static::NAME;
 		$stmt = App::$db->query($sql);
    		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 	public static function get($pk) {
-		$stmt = App::$db->prepare('SELECT '.implode(',',static::getFieldsNames()).' FROM '.static::TABLE.' WHERE '.static::pk_name().' = :'.static::pk_name());
+		$stmt = App::$db->prepare('SELECT '.implode(',',static::getFieldsNames()).' FROM '.static::NAME.' WHERE '.static::pk_name().' = :'.static::pk_name());
 		$stmt->bindParam(':'.static::pk_name(), $pk);
 		if ($stmt->execute()) {
 			return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -27,14 +46,14 @@ trait SqlTableBucket {
 	protected static function set($pk,$data) {
 		$sql;
 		if ($pk) {
-			$sql = 'UPDATE '.static::TABLE.' SET ';
+			$sql = 'UPDATE '.static::NAME.' SET ';
 			foreach (static::getFieldsNames() as $field_name) {
 				$sql .= "$field_name=:$field_name,";
 			}
 			$sql = mb_substr($sql, 0, -1);
 			$sql .= ' WHERE '.static::pk_name().' = :'.static::pk_name();
 		} else {
-			$sql = 'INSERT INTO '.static::TABLE.' (';
+			$sql = 'INSERT INTO '.static::NAME.' (';
 			$fields_sql = '';
 			$values_sql = '';
 			foreach (static::getFieldsNames() as $field_name) {
@@ -59,7 +78,7 @@ trait SqlTableBucket {
 		return $stmt->execute();
 	}
 	public static function destroy($pk) {
-		$stmt = App::$db->prepare('DELETE  FROM '.static::TABLE.' WHERE '.static::pk_name().' = :'.static::pk_name());
+		$stmt = App::$db->prepare('DELETE  FROM '.static::NAME.' WHERE '.static::pk_name().' = :'.static::pk_name());
 		$stmt->bindParam(':'.static::pk_name(), $pk);
 		App::debug($stmt);
 		return $stmt->execute();
