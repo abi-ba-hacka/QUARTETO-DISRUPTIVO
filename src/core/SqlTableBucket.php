@@ -1,10 +1,20 @@
 <?php
 class Result implements Iterator {
-	public mixed current ( void )
-	public scalar key ( void )
-	public void next ( void )
-	public void rewind ( void )
-	public boolean valid ( void )
+	public function current () {//mixed 
+
+	}
+	public function key () { //scalar
+
+	}
+	public function next () { //void 
+
+	}
+	public function rewind () { //void 
+
+	}
+	public function valid() { //boolean 
+
+	}
 }
 trait SqlTableBucket {
 	public static function each($fn) {
