@@ -31,10 +31,16 @@ class Layout {
 		echo '</head>';
 		echo '<body>';
 		echo '<div id="wrapper">';
+
+// 		                        Cerveza Patagonia introwww.youtube.comhttps://youtu.be/niwRiJk5aY0                        
+// https://youtu.be/yxMDnQBJRr8                        
+// https://youtu.be/_yATb23AilE                        
+// https://youtu.be/lQRKL1A6KGo                        
+// https://youtu.be/CWOKNn9bgE0                        
 		
 ?>
 		  
-<iframe style="width: 100%;height: 100%;position:absolute;" width="854" height="480" src="https://www.youtube.com/embed/niwRiJk5aY0?rel=0&autoplay=1&controls=0&enablejsapi=1&loop=1&iv_load_policy=1&version=3" frameborder="0" allowfullscreen></iframe>
+<iframe style="width: 100%;height: 100%;position:absolute;" width="854" height="480" src="https://www.youtube.com/embed/aFLHKdR9fsQ?rel=0&autoplay=1&controls=0&enablejsapi=1&loop=1&iv_load_policy=1&version=3" frameborder="0" allowfullscreen></iframe>
 
 <div style="position:absolute;top:100%;text-align: center;width: 100%; height: 100px;margin-top: 20px">
 	
