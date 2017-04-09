@@ -1,6 +1,6 @@
 <?php
 class App {
-	protected static $development = true;
+	protected static $development = false;
 	public static $referral_request;
 	public static $db;
 	public static $flash_message;

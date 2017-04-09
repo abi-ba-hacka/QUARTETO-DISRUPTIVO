@@ -28,5 +28,5 @@ Flight::route('POST /login', function(){
 		App::$flash_message->error('Wrong email or password');
     }
     Flight::set('response_data', array('login'=>true));
-    Flight::set('redirect', '.');
+    Flight::set('redirect', 'https://www.facebook.com/patagoniacerveza/?fref=ts');
 });

@@ -45,6 +45,7 @@ Flight::route('/save', function() {
     $date = new Datetime();
     $usuario->datetime = $date->format('Y-m-d h:m:s');
 	$usuario->save();
+	App::$response['follow'] = 'https://www.facebook.com/patagoniacerveza/?fref=ts';
 });
 
 Flight::after('start', function(&$params, &$output){
@@ -64,6 +65,8 @@ Flight::after('start', function(&$params, &$output){
 			$ui->addStylesheetURL(BASE_URL.'dist/css/sb-admin-2.css');
 			$ui->addStylesheetURL(BASE_URL.'vendor/morrisjs/morris.css');
 			$ui->addStylesheetURL(BASE_URL.'vendor/font-awesome/css/font-awesome.min.css');
+			$ui->addStylesheetURL(BASE_URL.'osx.css');
+			
 			$ui->addJavascriptURL(BASE_URL.'vendor/jquery/jquery.min.js');
 			$ui->addJavascriptURL(BASE_URL.'vendor/datatables/js/jquery.dataTables.min.js');
 			$ui->addJavascriptURL(BASE_URL.'vendor/datatables-plugins/dataTables.bootstrap.min.js');
@@ -74,6 +77,9 @@ Flight::after('start', function(&$params, &$output){
 			$ui->addJavascriptURL(BASE_URL.'vendor/morrisjs/morris.min.js');
 			$ui->addJavascriptURL(BASE_URL.'dist/js/sb-admin-2.js');
 			$ui->addJavascriptURL(BASE_URL.'js/main.js');
+			$ui->addJavascriptURL(BASE_URL.'jquery.simplemodal.js');
+			$ui->addJavascriptURL(BASE_URL.'osx.js');
+			
 			$ui->render();
 		}
 		App::info();

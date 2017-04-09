@@ -12,10 +12,11 @@ jQuery(function ($) {
 	var OSX = {
 		container: null,
 		init: function () {
+			// alert('hola');
 			$("input.osx, a.osx").click(function (e) {
 				e.preventDefault();	
 
-				$("#osx-modal-content").modal({
+				$("#form").modal({
 					overlayId: 'osx-overlay',
 					containerId: 'osx-container',
 					closeHTML: null,

@@ -42,11 +42,11 @@ class Layout {
 		  
 <iframe style="width: 100%;height: 100%;position:absolute;" width="854" height="480" src="https://www.youtube.com/embed/aFLHKdR9fsQ?rel=0&autoplay=1&controls=0&enablejsapi=1&loop=1&iv_load_policy=1&version=3" frameborder="0" allowfullscreen></iframe>
 
-<div style="position:absolute;top:100%;text-align: center;width: 100%; height: 100px;margin-top: 20px">
+<div id="form" style="position:absolute;top:100%;text-align: center;width: 100%; height: 100px;margin-top: 20px">
 	
 	<form method="post" action="save">
-	<label>email:</label><input type="email" name="email">
-	<input type="submit" name="">
+	<label>Ingresá tu <b>email</b> para revivir la experiencia</label> <br> <input type="email" name="email">
+	<input type="submit" name="" value="Ingresar">
 </form>
 </div>
     <?php
