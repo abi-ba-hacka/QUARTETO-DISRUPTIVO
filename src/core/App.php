@@ -23,9 +23,7 @@ class App {
 
 		$config = require_once 'src/config.php';
 		static::$db = new PDO(
-			$config['pdo_driver'].':host='.	$config['pdo_host'].
-			';dbname='.$config['pdo_database_name'].
-			';charset=utf8mb4', 'root', '');
+			$config['pdo_driver'].':host='.	$config['pdo_host'].';dbname='.$config['pdo_database_name'].';charset=utf8mb4', $config['pdo_user'], $config['pdo_password']);
 		static::$flash_message = new \Plasticbrain\FlashMessages\FlashMessages();
 		// $log = new Logger('name');
 		// $log->pushHandler(new StreamHandler('/tmp/php_error.log', Logger::WARNING));

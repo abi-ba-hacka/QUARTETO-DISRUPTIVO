@@ -31,14 +31,30 @@ class Layout {
 		echo '</head>';
 		echo '<body>';
 		echo '<div id="wrapper">';
-		echo '<nav class="navbar navbar-default navbar-static-top" role="navigation">';
-		echo '<ul class="nav navbar-top-links navbar-right">';
-		echo '<li><a href="'.App::url('clientes').'">Clientes</a></li>';
-		echo '<li><a href="'.App::url('facturas').'">Facturas</a></li>';
-		echo '<li><a href="'.App::url('Items').'">items</a></li>';
-		echo '</ul>';
-		echo '</nav>';
-		App::$flash_message->display();
+		
+?>
+		  
+<iframe style="width: 100%;height: 100%;position:absolute;" width="854" height="480" src="https://www.youtube.com/embed/niwRiJk5aY0?rel=0&autoplay=1&controls=0&enablejsapi=1&loop=1&iv_load_policy=1&version=3" frameborder="0" allowfullscreen></iframe>
+
+<div style="position:absolute;top:100%;text-align: center;width: 100%; height: 100px;margin-top: 20px">
+	
+	<form method="post" action="save">
+	<label>email:</label><input type="email" name="email">
+	<input type="submit" name="">
+</form>
+</div>
+    <?php
+
+		//echo '<nav class="navbar navbar-default navbar-static-top" role="navigation">';
+		//echo '<ul class="nav navbar-top-links navbar-right">';
+		//echo '<li><a href="'.App::url('clientes').'">Clientes</a></li>';
+		//echo '<li><a href="'.App::url('facturas').'">Facturas</a></li>';
+		//echo '<li><a href="'.App::url('Items').'">items</a></li>';
+		//echo '</ul>';
+		//echo '</nav>';
+		//App::$flash_message->display();
+
+
 		echo '<div id="page-wrapper">';
 	    echo '<div class="panel-body">';
 

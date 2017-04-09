@@ -7,9 +7,7 @@ require_once 'src/core/App.php';
 require_once 'src/core/Model.php';
 require_once 'src/core/SqlTableBucket.php';
 
-require_once 'src/model/Facturas.php';
-require_once 'src/model/Items.php';
-require_once 'src/model/Clientes.php';
+require_once 'src/model/Usuarios.php';
 
 require_once 'src/controller/Clientes.php';
 require_once 'src/controller/Facturas.php';
@@ -33,10 +31,22 @@ class InputException extends Exception {
 		parent::__construct();
 	}
 }
+
 Flight::route('GET /', function(){});
 Flight::before('start', function(){
 	App::setAction(Flight::request()->url);
 });
+
+Flight::route('/save', function() {
+    App::$response['follow'] = App::url('.');
+    $data = Flight::request()->data;
+    $usuario = new Usuarios();
+    $usuario->email = $data['email'];
+    $date = new Datetime();
+    $usuario->datetime = $date->format('Y-m-d h:m:s');
+	$usuario->save();
+});
+
 Flight::after('start', function(&$params, &$output){
 	if (Flight::request()==='ajax' || isset($_GET['ajax'])) {
 		App::$response['flash_message'] = $_SESSION['flash_messages'];

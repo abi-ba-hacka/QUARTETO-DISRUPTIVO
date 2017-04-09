@@ -24,6 +24,13 @@ trait SqlTableBucket {
    			;
 		}
 	}
+	public function create($name,$fields=array()) {
+		$sql .= 'CREATE TABLE '.$name .'(';
+			foreach ($variable as $key => $value) {
+			 	$sql .= 'column3 datatype,';
+			$sql .= ');';
+		}
+	}
 	public static function rows($selection=null) {
 		$field_list = '*';
 		if ($selection == null) {
@@ -74,6 +81,7 @@ trait SqlTableBucket {
 			$values_sql = mb_substr($values_sql, 0, -1);
 			$sql .= $fields_sql.') VALUES ('.$values_sql.');';
 		}
+		echo $sql;
 		$stmt = App::$db->prepare($sql);
 		if ($pk) {
 			$stmt->bindParam(':'.static::pk_name(), $pk);
